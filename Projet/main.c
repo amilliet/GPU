@@ -117,7 +117,7 @@ float *compute (unsigned iterations)
             
         }
     }
-    print_ocean();
+    //print_ocean();
     //return DYNAMIC_COLORING; // altitude-based coloring
     return couleurs;
 }
@@ -154,17 +154,17 @@ float *compute_sequetielle (unsigned iterations)
         
         // Copy the second line of ocean
         int tmp_col[FIN - DEBUT + 1];
-        printf("\n ligne 0 : ");
+        //printf("\n ligne 0 : ");
         for (int x = DEBUT; x < FIN; x++){
             tmp_col[x] = ocean[DEBUT][x];
-            printf("%d ", tmp_col[x]);
+            //printf("%d ", tmp_col[x]);
         }
         
         
         for (int y = DEBUT; y < FIN; y++)
         {
-            printf("\n");
-            printf("ligne %d :", y+1);
+            //printf("\n");
+            //printf("ligne %d :", y+1);
             move = 0;
             
             // First column
@@ -214,9 +214,10 @@ float *compute_sequetielle (unsigned iterations)
                     tmp_col[x] = ocean[y+1][x];
                 }
                 
+                /*
                 if (y < FIN - 1)
                     printf(" %d ", tmp_col[x]);
-               
+                 */
                 move = 0;
                 if ( div4 > 0 ){
                     ocean[y][x+1] += div4;
@@ -231,7 +232,7 @@ float *compute_sequetielle (unsigned iterations)
             
         }
     }
-    print_ocean();
+    //print_ocean();
     return couleurs;
 }
 
