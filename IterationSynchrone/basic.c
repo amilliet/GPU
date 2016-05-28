@@ -1,10 +1,12 @@
 #include "basic.h"
 
 
+#define NB 4
+
 int traiter(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c couleurs[DIM][DIM]){
     int changement = 0;
-
-#pragma omp parallel for collapse(2) //reduction(+:ocean[y][x],ocean[y][x-1],ocean[y][x+1],ocean[y-1][x],ocean[y + 1][x])
+    static int a = 1;
+#pragma omp parallel for num_threads(NB) collapse(2) 
     for (int y = y_d; y < y_f; y++)
     {
         for (int x = x_d; x < x_f ; x++){
@@ -12,13 +14,13 @@ int traiter(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c coul
             if (ocean[y][x] >= 4){
                 int div4 = ocean[y][x] / 4;
 #pragma critical
-            {
+		{
                 ocean[y][x] = ocean[y][x]  % 4;
                 ocean[y][x-1] += div4;
                 ocean[y][x+1] += div4;
                 ocean[y-1][x] += div4;
                 ocean[y + 1][x] += div4;
-            }
+		}
                 changement = 1;
                 move = 1;
             }
@@ -29,10 +31,13 @@ int traiter(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c coul
             coloring(y+1,x,move, ocean, couleurs);
             coloring(y,x,move,ocean, couleurs);
 #endif
-            //int tid = omp_get_thread_num();
-            //printf("Hello World from thread = %d\n", tid);
-        }
+	    if(a == 1){
+	      //	      int tid = omp_get_thread_num();
+	      //printf("the thread = %d change (%d,%d)\n", tid,y,x);
+	    }
+	} 
         
     }
+    a = 0;
     return changement;
 }

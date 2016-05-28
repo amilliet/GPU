@@ -36,7 +36,7 @@ static void homogene__sable_init ()
 
 static void centrale_case__sable_init ()
 {
-    unsigned dmax2 = 100000;
+    unsigned dmax2 = MAX_HEIGHT;
     ocean[DIM/2][DIM/2] = dmax2;
     
 }
@@ -92,7 +92,7 @@ int main (int argc, char **argv)
     gettimeofday(&t2, NULL);
     printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
     printf("steep %d\n", i);
-    
+        print_ocean(ocean);
 #endif
    
     return 0;
