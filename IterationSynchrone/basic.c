@@ -11,12 +11,14 @@ int traiter(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c coul
             int move = 0;
             if (ocean[y][x] >= 4){
                 int div4 = ocean[y][x] / 4;
+#pragma critical
+            {
                 ocean[y][x] = ocean[y][x]  % 4;
                 ocean[y][x-1] += div4;
                 ocean[y][x+1] += div4;
                 ocean[y-1][x] += div4;
                 ocean[y + 1][x] += div4;
-                
+            }
                 changement = 1;
                 move = 1;
             }
