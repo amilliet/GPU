@@ -16,12 +16,20 @@ endif
 
 default: $(PROG)
 
-$(PROG): main.o display.o
+$(PROG): main.o display.o other_sequentielle.o basic.o utile.o propagation.o
 	$(CC) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 
-main.o: display.h
+main.o: display.h other_sequentielle.h propagation.h basic.h
 
 display.o: display.h
+
+utile.o: utile.h parameter.h 
+
+propagation.o: propagation.h parameter.h utile.h
+
+basic.o: basic.h parameter.h utile.h
+
+other_sequentielle.o: parameter.h other_sequentielle.h utile.h 
 
 clean:
 	rm -rf *.o $(PROG)
