@@ -3,13 +3,13 @@ ARCH            := $(shell uname -s | tr a-z A-Z)
 
 PROG	:=	sable
 
-CFLAGS	:=	-g -O3 -std=c99 -Wno-deprecated-declarations
+CFLAGS	:=	-g -O3 -std=c99 -Wno-deprecated-declarations -fopenmp
 ifeq ($(ARCH),DARWIN)
 CFLAGS	+=	-I /opt/local/include
 LDFLAGS	+=	-L /opt/local/include
 LDLIBS	+=	-framework GLUT -framework OpenGL -framework OpenCL
 else
-LDLIBS		:= -lOpenCL -lGL -lGLU -lglut -lm
+LDLIBS		:= -lOpenCL -lGL -lGLU -lglut -fopenmp -lm 
 endif
 
 .phony: default clean
