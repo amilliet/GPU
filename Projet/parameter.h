@@ -2,7 +2,7 @@
 
 #ifndef parameter_h
 #define parameter_h
-
+#include <sys/time.h>
 /*
     CHANGER LES TESTS
 */
