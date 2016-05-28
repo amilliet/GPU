@@ -1,7 +1,7 @@
 
 #ifndef basic_h
 #define basic_h
-
+#include<omp.h>
 #include <stdio.h>
 
 #include "parameter.h"
