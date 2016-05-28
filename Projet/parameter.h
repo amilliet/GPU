@@ -6,9 +6,9 @@
 /*
     CHANGER LES TESTS
 */
-#define DISPLAY // Commenter pour faire les tests de performance
+//#define DISPLAY // Commenter pour faire les tests de performance
 #define CENTRALE // Initialisation Configuration ou une case centrale comporte 10^5 éléments -- Commenter pour avoir la configuration homogène
-#define PROP // Algorithme Propagation -- OTHER : algorithme long -- Commenter : algorithme basic
+//#define PROP // Algorithme Propagation -- OTHER : algorithme long -- Commenter : algorithme basic
 
 #define DIM 128 //5
 #define MAX_HEIGHT 100000
