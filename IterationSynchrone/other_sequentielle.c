@@ -1,7 +1,7 @@
 
 #include "other_sequentielle.h"
 
-#define NB 3
+#define NB 10
 
 int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM],c couleurs[DIM][DIM]){
     int div4 = 0;
