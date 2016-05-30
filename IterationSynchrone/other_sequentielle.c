@@ -63,7 +63,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         
         // Center
         
-#pragma omp parallel for schedule(dynamic) 
+#pragma omp parallel for 
         for (int x = x_d; x < x_f; x++){
             
             div4 = tmp[y][x] / 4;
