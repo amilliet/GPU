@@ -1,7 +1,7 @@
 
 #include "other_sequentielle.h"
 
-
+#define NB 4
 
 int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM],c couleurs[DIM][DIM]){
     int div4 = 0;
@@ -13,6 +13,9 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
      
      See only if ocean[DEBUT][x] (the case y+1) have something to give
      */
+#pragma omp parallel num_threads(NB) firstprivate(oc1,move,div4) shared(tmp_col,changement)
+    {
+#pragma omp for schedule(dynamic)
     for (int x = x_d; x < x_f ; x++){
         oc1 = ocean[y_d][x] / 4;
         
@@ -26,15 +29,15 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
 #endif
     }
     
-    
     // Copy the second line of ocean
     int tmp_col[x_f - x_d + 1];
-    //printf("\n ligne 0 : ");
+        
+#pragma omp for schedule(dynamic)
     for (int x = x_d; x < x_f; x++){
         tmp_col[x] = ocean[y_d][x];
     }
     
-    
+#pragma omp for schedule(dynamic)
     for (int y = y_d; y < y_f; y++)
     {
         move = 0;
@@ -54,7 +57,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         
         // Center
         
-        
+#pragma omp for schedule(dynamic)
         for (int x = x_d; x < x_f; x++){
             
             div4 = tmp_col[x] / 4;
@@ -73,11 +76,14 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
             
             if ( oc1 > 0 || div4 > 0){
                 int mod = tmp_col[x] % 4;
+#pragma critcal
+            {
                 if (ocean[y][x] == tmp_col[x]){
                     ocean[y][x] = mod + oc1;
                 }else{
                     ocean[y][x] = mod + oc1 + ocean[y][x] - tmp_col[x];
                 }
+            }
                 changement = 1;
                 move = 1;
             }
@@ -91,8 +97,11 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
             }
             
             if ( div4 > 0 ){
+#pragma critcal
+                {
                 ocean[y][x+1] += div4;
                 ocean[y+1][x] += div4;
+                }
                 changement = 1;
                 move = 1;
             }
@@ -102,6 +111,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
 #endif
         }
         
+    }
     }
     return changement;
 }
