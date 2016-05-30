@@ -26,7 +26,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
        
     }
 
-#pragma omp parallel for firstprivate(oc1,move,div4)
+#pragma omp parallel for firstprivate(oc1,move,div4) num_threads(NB)
     for (int x = x_d; x < x_f ; x++){
         oc1 = ocean[y_d][x] / 4;
         
@@ -43,7 +43,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         
 
     
-#pragma omp parallel for firstprivate(oc1,move,div4)
+#pragma omp parallel for firstprivate(oc1,move,div4) num_threads(NB)
     for (int y = y_d; y < y_f; y++)
     {
         move = 0;
@@ -63,7 +63,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         
         // Center
         
-#pragma omp parallel for 
+#pragma omp parallel for num_threads(NB)
         for (int x = x_d; x < x_f; x++){
             
             div4 = tmp[y][x] / 4;
@@ -112,7 +112,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         
         
     }
-#pragma omp parallel for schedule(dynamic) 
+#pragma omp parallel for num_threads(NB)
     for (int x = x_d; x < x_f; x++){
         oc1 = tmp[y_f-1][x] / 4;
     
