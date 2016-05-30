@@ -115,8 +115,10 @@ int main (int argc, char **argv)
         i++;
     }
     gettimeofday(&t2, NULL);
+    print_ocean(ocean);
     printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
     printf("steep %d\n", i);
+    
     
 #endif
    
