@@ -3,6 +3,7 @@
 
 #include "display.h"
 #include "basic.h"
+#include "other_sequentielle.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -57,6 +58,22 @@ float *compute (unsigned iterations)
     return couleurs;
 }
 
+// Optimisation sequentielle
+
+
+
+float *compute_sequetielle (unsigned iterations)
+{
+    static int step = 0;
+    for (unsigned i = 0; i < iterations; i++)
+    {
+        step++;
+        
+        int changement = traiter_sequentielle(DEBUT, DEBUT, FIN, FIN, ocean, couleurs);
+    }
+    //print_ocean();
+    return couleurs;
+}
 
 
 int main (int argc, char **argv)
@@ -68,6 +85,17 @@ int main (int argc, char **argv)
 #endif
     
     
+#ifdef OTHER
+    compute_func_t c = compute_sequetielle;
+    traiter_func_t t = traiter_sequentielle;
+#elseif PROP
+   // compute_func_t c = compute_prop;
+    //traiter_func_t t = traiterProp;
+#else
+    compute_func_t c = compute;
+    traiter_func_t t = traiter;
+#endif
+    
     
 #ifdef DISPLAY
     
@@ -75,7 +103,7 @@ int main (int argc, char **argv)
                   DIM,              // dimension ( = x = y) du tas
                   MAX_HEIGHT,       // hauteur maximale du tas
                   get,              // callback func
-                  compute);               // callback func
+                  c);               // callback func
     
 #else
     
@@ -85,14 +113,14 @@ int main (int argc, char **argv)
     int i = 0;
     
     
-    while(traiter(DEBUT, DEBUT, FIN, FIN, ocean, couleurs))
+    while(t(DEBUT, DEBUT, FIN, FIN, ocean, couleurs))
     {
         i++;
     }
     gettimeofday(&t2, NULL);
     printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
     printf("steep %d\n", i);
-        print_ocean(ocean);
+    
 #endif
    
     return 0;
