@@ -13,9 +13,9 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
      
      See only if ocean[DEBUT][x] (the case y+1) have something to give
      */
-#pragma omp parallel num_threads(NB) firstprivate(oc1,move,div4) shared(tmp_col,changement)
+#pragma omp parallel num_threads(NB) firstprivate(oc1,move,div4) 
     {
-#pragma omp for schedule(dynamic)
+#pragma omp for schedule(dynamic) shared(changement)
     for (int x = x_d; x < x_f ; x++){
         oc1 = ocean[y_d][x] / 4;
         
@@ -32,12 +32,12 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
     // Copy the second line of ocean
     int tmp_col[x_f - x_d + 1];
         
-#pragma omp for schedule(dynamic)
+#pragma omp for schedule(dynamic) shared(tmp_col)
     for (int x = x_d; x < x_f; x++){
         tmp_col[x] = ocean[y_d][x];
     }
     
-#pragma omp for schedule(dynamic)
+#pragma omp for schedule(dynamic) shared(tmp_col,changement)
     for (int y = y_d; y < y_f; y++)
     {
         move = 0;
