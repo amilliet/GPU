@@ -1,7 +1,7 @@
 
 #include "other_sequentielle.h"
 
-#define NB 2
+#define NB 3
 
 int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM],c couleurs[DIM][DIM]){
     int div4 = 0;
@@ -17,7 +17,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
      See only if ocean[DEBUT][x] (the case y+1) have something to give
      */
 
-#pragma omp parallel for num_threads(NB) firstprivate(oc1,move,div4)
+#pragma omp parallel for num_threads(NB) firstprivate(oc1,move,div4) shared(changement)
     for (int x = x_d; x < x_f ; x++){
         oc1 = ocean[y_d][x] / 4;
         
@@ -37,7 +37,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         tmp[0][x] = ocean[y_d][x];
     }
     
-#pragma omp parallel for num_threads(NB) firstprivate(oc1,move,div4)
+#pragma omp parallel for num_threads(NB) firstprivate(oc1,move,div4) shared(changement)
     for (int y = y_d; y < y_f; y++)
     {
         move = 0;
