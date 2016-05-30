@@ -16,6 +16,15 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
      
      See only if ocean[DEBUT][x] (the case y+1) have something to give
      */
+    
+#pragma omp parallel for collapse(2) num_threads(NB)
+    for (int y = y_d; y < y_f; y++)
+    {
+        for (int x = x_d; x < x_f; x++){
+            tmp[y][x] = ocean[y][x];
+        }
+       
+    }
 
 #pragma omp parallel for firstprivate(oc1,move,div4) shared(changement)
     for (int x = x_d; x < x_f ; x++){
@@ -32,10 +41,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
     }
     
         
-#pragma omp parallel for num_threads(NB)
-    for (int x = x_d; x < x_f; x++){
-        tmp[0][x] = ocean[y_d][x];
-    }
+
     
 #pragma omp parallel for firstprivate(oc1,move,div4) shared(changement) schedule(dynamic)
     for (int y = y_d; y < y_f; y++)
@@ -43,7 +49,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         move = 0;
         
         // First column
-        oc1 = tmp[y-1][x_d] / 4;
+        oc1 = tmp[y][x_d] / 4;
         
         if ( oc1 > 0 ){
             ocean[y][x_d-1] += oc1;
@@ -59,31 +65,29 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         
 #pragma omp parallel for schedule(dynamic)
         for (int x = x_d; x < x_f; x++){
-
-            div4 = tmp[y-1][x] / 4;
-            
+                div4 = tmp[y][x] / 4;
             // Don't take the last column
             if (x+1 < x_f){
-                oc1 = tmp[y-1][x+1] / 4;
+                oc1 = tmp[y][x+1] / 4;
             }else{
                 oc1 = 0;
             }
             
+            if(x>x_d){
+                oc1 += tmp[y][x-1] / 4;
+            }
             // Don't take the last line
             if (y+1 < y_f){
-                oc1 += ocean[y+1][x] / 4;
+                oc1 += tmp[y+1][x] / 4;
+            }
+            
+            if(y>y_d){
+                oc1 += tmp[y-1][x] / 4;
             }
             
             if ( oc1 > 0 || div4 > 0){
-                int mod = tmp[y-1][x] % 4;
-#pragma omp critcal
-            {
-                if (ocean[y][x] == tmp[y-1][x]){
-                    ocean[y][x] = mod + oc1;
-                }else{
-                    ocean[y][x] = mod + oc1 + ocean[y][x] - tmp[y-1][x];
-                }
-            }
+                int mod = tmp[y][x] % 4;
+                ocean[y][x] = mod + oc1;
                 changement = 1;
                 move = 1;
             }
@@ -92,26 +96,35 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
             move = 0;
 #endif
             
-            if (y < y_f - 1){
-                tmp[y][x] = ocean[y+1][x];
-            }
-            
-            if ( div4 > 0 ){
-#pragma omp critcal
-                {
-                ocean[y][x+1] += div4;
-                ocean[y+1][x] += div4;
-                }
-                changement = 1;
-                move = 1;
-            }
-#ifdef DISPLAY
-             coloring(y,x+1,move,ocean,couleurs);
-             coloring(y+1,x,move,ocean,couleurs);
-#endif
+           
         }
+        oc1 = tmp[y][x_f-1] / 4;
+        if ( oc1 > 0 ){
+            ocean[y][x_f] += oc1;
+            move = 1;
+            changement = 1;
+        }
+#ifdef DISPLAY
+        coloring(y,x_f,move,ocean, couleurs);
+        move = 0;
+#endif
+        
         
     }
+    for (int x = x_d; x < x_f; x++){
+        oc1 = tmp[y_f-1][x] / 4;
+    
+        if ( oc1 > 0 ){
+            ocean[y_f][x] += oc1;
+            move = 1;
+            changement = 1;
+        }
+#ifdef DISPLAY
+        coloring(y_f,x,move,ocean, couleurs);
+        move = 0;
+#endif
+    }
+    
     
     return changement;
 }

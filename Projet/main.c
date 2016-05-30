@@ -138,6 +138,7 @@ int main (int argc, char **argv)
     gettimeofday(&t2, NULL);
     printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
     printf("steep %d\n", i);
+
     
 #endif
    
