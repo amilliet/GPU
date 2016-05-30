@@ -58,7 +58,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         
         // Center
         
-#pragma omp for schedule(dynamic)
+#pragma omp for 
         for (int x = x_d; x < x_f; x++){
             
             div4 = tmp_col[x] / 4;
