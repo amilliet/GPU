@@ -26,7 +26,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
        
     }
 
-#pragma omp parallel num_threads(NB) firstprivate(oc1,move,div4)
+#pragma omp parallel num_threads(NB) //firstprivate(oc1,move,div4)
     {
     #pragma omp for nowait
     for (int x = x_d; x < x_f ; x++){
