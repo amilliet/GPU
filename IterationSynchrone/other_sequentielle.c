@@ -10,15 +10,14 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
     int changement = 0;
     
     // Copy the second line of ocean
-    int tmp_col[x_f - x_d + 1];
+    int tmp[x_f - x_d + 1][x_f - x_d + 1];
     /*
      First line
      
      See only if ocean[DEBUT][x] (the case y+1) have something to give
      */
-#pragma omp parallel num_threads(NB) firstprivate(oc1,move,div4)  shared(tmp_col,changement)
-    {
-#pragma omp for 
+
+#pragma omp parallel for num_threads(NB) firstprivate(oc1,move,div4)
     for (int x = x_d; x < x_f ; x++){
         oc1 = ocean[y_d][x] / 4;
         
@@ -33,18 +32,18 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
     }
     
         
-#pragma omp for
+#pragma omp parallel for num_threads(NB)
     for (int x = x_d; x < x_f; x++){
-        tmp_col[x] = ocean[y_d][x];
+        tmp[0][x] = ocean[y_d][x];
     }
     
-#pragma omp for 
+#pragma omp parallel for num_threads(NB) firstprivate(oc1,move,div4)
     for (int y = y_d; y < y_f; y++)
     {
         move = 0;
         
         // First column
-        oc1 = tmp_col[x_d] / 4;
+        oc1 = tmp[y-1][x_d] / 4;
         
         if ( oc1 > 0 ){
             ocean[y][x_d-1] += oc1;
@@ -58,14 +57,14 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         
         // Center
         
-//#pragma omp for
+#pragma omp parallel for num_threads(NB)
         for (int x = x_d; x < x_f; x++){
             
-            div4 = tmp_col[x] / 4;
+            div4 = tmp[y-1][x] / 4;
             
             // Don't take the last column
             if (x+1 < x_f){
-                oc1 = tmp_col[x+1] / 4;
+                oc1 = tmp[y-1][x+1] / 4;
             }else{
                 oc1 = 0;
             }
@@ -76,13 +75,13 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
             }
             
             if ( oc1 > 0 || div4 > 0){
-                int mod = tmp_col[x] % 4;
+                int mod = tmp[y-1][x] % 4;
 #pragma critcal
             {
-                if (ocean[y][x] == tmp_col[x]){
+                if (ocean[y][x] == tmp[y-1][x]){
                     ocean[y][x] = mod + oc1;
                 }else{
-                    ocean[y][x] = mod + oc1 + ocean[y][x] - tmp_col[x];
+                    ocean[y][x] = mod + oc1 + ocean[y][x] - tmp[y-1][x];
                 }
             }
                 changement = 1;
@@ -93,8 +92,8 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
             move = 0;
 #endif
             
-            if (tmp_col[x] != ocean[y+1][x] && y < y_f - 1){
-                tmp_col[x] = ocean[y+1][x];
+            if (y < y_f - 1){
+                tmp[y][x] = ocean[y+1][x];
             }
             
             if ( div4 > 0 ){
@@ -114,6 +113,6 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
 #pragma barrier
         
     }
-    }
+    
     return changement;
 }
