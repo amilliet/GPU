@@ -18,7 +18,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
      */
 #pragma omp parallel num_threads(NB) firstprivate(oc1,move,div4)  shared(tmp_col,changement)
     {
-#pragma omp for schedule(dynamic)
+#pragma omp for 
     for (int x = x_d; x < x_f ; x++){
         oc1 = ocean[y_d][x] / 4;
         
@@ -33,12 +33,12 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
     }
     
         
-#pragma omp for schedule(dynamic)
+#pragma omp for
     for (int x = x_d; x < x_f; x++){
         tmp_col[x] = ocean[y_d][x];
     }
     
-#pragma omp for schedule(dynamic)
+#pragma omp for 
     for (int y = y_d; y < y_f; y++)
     {
         move = 0;
