@@ -24,7 +24,7 @@ typedef struct {
     float R, G, B;
 } c;
 
-typedef float * (*traiter_func_t) (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c couleurs[DIM][DIM]);
+typedef int * (*traiter_func_t) (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c couleurs[DIM][DIM]);
 
 
 #endif /* parameter_h */
