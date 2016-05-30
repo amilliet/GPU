@@ -59,7 +59,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         
 #pragma omp parallel for schedule(dynamic)
         for (int x = x_d; x < x_f; x++){
-            
+
             div4 = tmp[y-1][x] / 4;
             
             // Don't take the last column
@@ -76,7 +76,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
             
             if ( oc1 > 0 || div4 > 0){
                 int mod = tmp[y-1][x] % 4;
-#pragma critcal
+#pragma omp critcal
             {
                 if (ocean[y][x] == tmp[y-1][x]){
                     ocean[y][x] = mod + oc1;
@@ -97,7 +97,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
             }
             
             if ( div4 > 0 ){
-#pragma critcal
+#pragma omp critcal
                 {
                 ocean[y][x+1] += div4;
                 ocean[y+1][x] += div4;
