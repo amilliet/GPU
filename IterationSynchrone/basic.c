@@ -16,13 +16,13 @@ int traiter(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c coul
 #pragma atomic
                 ocean[y][x] = ocean[y][x]  % 4;
 #pragma atomic
-                ocean[y][x-1] += div4;
+                ocean[y][x-1] = ocean[y][x-1] + div4;
 #pragma atomic
-                ocean[y][x+1] += div4;
+                ocean[y][x+1] = ocean[y][x+1] + div4;
 #pragma atomic
-                ocean[y-1][x] += div4;
+                ocean[y-1][x] = ocean[y-1][x] + div4;
 #pragma atomic
-                ocean[y + 1][x] += div4;
+                ocean[y + 1][x] = ocean[y + 1][x] + div4;
                 
                 changement = 1;
                 move = 1;
