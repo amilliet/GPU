@@ -106,7 +106,7 @@ int main (int argc, char **argv)
 #ifdef OTHER
     compute_func_t c = compute_sequetielle;
     traiter_func_t t = traiter_sequentielle;
-#elseif PROP
+#elif PROP
     compute_func_t c = compute_prop;
     traiter_func_t t = traiterProp;
 #else
