@@ -1,26 +1,29 @@
 #include "basic.h"
 
 
-#define OMP_NUM_THREADS 4
+#define NB 4
 
 int traiter(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c couleurs[DIM][DIM]){
     int changement = 0;
     static int a = 1;
-#pragma omp parallel for collapse(2) shared(ocean[y][x],ocean[y][x-1],ocean[y][x+1],ocean[y-1][x],ocean[y + 1][x])
+#pragma omp parallel for num_threads(NB) collapse(2) shared(ocean) schedule(static)
     for (int y = y_d; y < y_f; y++)
     {
         for (int x = x_d; x < x_f ; x++){
             int move = 0;
             if (ocean[y][x] >= 4){
                 int div4 = ocean[y][x] / 4;
-#pragma critical
-		{
+#pragma atomic
                 ocean[y][x] = ocean[y][x]  % 4;
-                ocean[y][x-1] += div4;
+#pragma atomic
+                ocean[y][x-1] += div4;
+#pragma atomic
                 ocean[y][x+1] += div4;
+#pragma atomic
                 ocean[y-1][x] += div4;
+#pragma atomic
                 ocean[y + 1][x] += div4;
-		}
+                
                 changement = 1;
                 move = 1;
             }
