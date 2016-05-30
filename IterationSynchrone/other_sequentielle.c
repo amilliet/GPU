@@ -43,17 +43,14 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         }
         
         
-        
-        
 #pragma omp for collapse(2)
         for (int y = y_d; y < y_f; y++)
         {
             for (int x = 0; x < x_f; x++){
                 
+                // First column
                 if(x == 0){
                     move = 0;
-                    
-                    // First column
                     oc1 = tmp[y][x_d] / 4;
                     
                     if ( oc1 > 0 ){
@@ -66,6 +63,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
                     move = 0;
 #endif
                 }else{
+                    // Center
                     div4 = tmp[y][x] / 4;
                     // Don't take the last column
                     if (x+1 < x_f){
@@ -96,23 +94,26 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
                     coloring(y,x,move,ocean,couleurs);
                     move = 0;
 #endif
-                    
-                    
                 }
-                oc1 = tmp[y][x_f-1] / 4;
-                if ( oc1 > 0 ){
-                    ocean[y][x_f] += oc1;
-                    move = 1;
-                    changement = 1;
-                }
+            }
+            
+            // Last Column
+            
+            oc1 = tmp[y][x_f-1] / 4;
+            if ( oc1 > 0 ){
+                ocean[y][x_f] += oc1;
+                move = 1;
+                changement = 1;
+                
+            }
 #ifdef DISPLAY
                 coloring(y,x_f,move,ocean, couleurs);
                 move = 0;
 #endif
-                
-                
-            }
+            
         }
+        
+        // Last Line
 #pragma omp for nowait
         for (int x = x_d; x < x_f; x++){
             oc1 = tmp[y_f-1][x] / 4;

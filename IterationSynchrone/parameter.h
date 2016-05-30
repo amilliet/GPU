@@ -16,7 +16,7 @@
 #define FIN  DIM - 1
 
 #include <sys/time.h>
-#include <omp.h>
+//#include <omp.h>
 
 
 // vecteur de pixel renvoyé par compute
