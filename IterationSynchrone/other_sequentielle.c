@@ -45,7 +45,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
         
 
     
-    #pragma omp for collapse(2)
+    #pragma omp for
     for (int y = y_d; y < y_f; y++)
     {
         move = 0;
@@ -64,7 +64,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
 #endif
         
         // Center
-        
+        #pragma omp for
         for (int x = x_d; x < x_f; x++){
             
             div4 = tmp[y][x] / 4;
