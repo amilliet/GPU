@@ -111,6 +111,7 @@ int traiter_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM
              coloring(y+1,x,move,ocean,couleurs);
 #endif
         }
+#pragma barrier
         
     }
     }
