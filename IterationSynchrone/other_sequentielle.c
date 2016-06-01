@@ -43,9 +43,10 @@ int traiter_vision_voisin_parallele (int y_d, int x_d, int y_f, int x_f, unsigne
         }
         
         
-#pragma omp for collapse(2)
+#pragma omp for
         for (int y = y_d; y < y_f; y++)
         {
+#pragma omp for 
             for (int x = 0; x < x_f; x++){
                 
                 // First column
