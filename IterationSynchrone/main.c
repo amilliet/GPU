@@ -52,7 +52,7 @@ float *compute (unsigned iterations)
     for (unsigned i = 0; i < iterations; i++)
     {
         step++;
-        int changement = traiter(DEBUT, DEBUT, FIN, FIN, ocean, couleurs);
+        int changement = traiter_basic_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs);
     }
     
     return couleurs;
@@ -69,7 +69,7 @@ float *compute_sequetielle (unsigned iterations)
     {
         step++;
         
-        int changement = traiter_sequentielle(DEBUT, DEBUT, FIN, FIN, ocean, couleurs);
+        int changement = traiter_vision_voisin_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs);
     }
     //print_ocean();
     return couleurs;
@@ -79,18 +79,23 @@ float *compute_sequetielle (unsigned iterations)
 int main (int argc, char **argv)
 {
 #ifdef CENTRALE
+    int i = 0;
     centrale_case__sable_init();
 #else
+    int i = 1;
     homogene__sable_init ();
 #endif
     
     
 #ifdef OTHER
     compute_func_t c = compute_sequetielle;
-    traiter_func_t t = traiter_sequentielle;
+    traiter_func_t ts = traiter_vision_voisin_sequentielle;
+    traiter_func_t tp = traiter_vision_voisin_parallele;
 #else
     compute_func_t c = compute;
-    traiter_func_t t = traiter;
+    traiter_func_t ts = traiter_basic_sequentielle;
+    traiter_func_t tp = traiter_basic_parallele;
+
 #endif
     
     
@@ -102,24 +107,57 @@ int main (int argc, char **argv)
                   get,              // callback func
                   c);               // callback func
     
-#else
+#elifdef ACC
     
-    struct timeval t1, t2;
+    struct timeval t1, t2, t3, t4;
     
     gettimeofday(&t1, NULL);
-    int i = 0;
+    while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
+    gettimeofday(&t2, NULL);
+    
+    if (i == 0){
+        centrale_case__sable_init();
+    }else{
+        homogene__sable_init();
+    }
+    
+    gettimeofday(&t3, NULL);
+    while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
+    gettimeofday(&t4, NULL);
+    
+    printf("%g / %g  = acceleration = %g\n", TIME_DIFF(t1,t2) / 1000,  TIME_DIFF(t3,t4) / 1000, TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
+    
+    FILE *f = NULL;
+    f = fopen("./../Courbe/test.data","a");
     
     
-    while(t(DEBUT, DEBUT, FIN, FIN, ocean, couleurs))
+    if (f != NULL)
     {
-        i++;
+        fprintf(f,"%d  %f\n",NB_THREAD,1.0*TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
+    }
+    else
+    {
+        printf("Impossible d'ouvrir le fichier");
+    }
+    
+    fclose(f);
+    
+#else
+    struct timeval t1, t2;
+    
+    
+    
+    gettimeofday(&t1, NULL);
+    int j = 0;
+    
+    while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs))
+    {
+        j++;
     }
     gettimeofday(&t2, NULL);
     print_ocean(ocean);
     printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
-    printf("steep %d\n", i);
-    
-    
+    printf("steep %d\n", j);
 #endif
    
     return 0;
