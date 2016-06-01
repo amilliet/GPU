@@ -107,7 +107,7 @@ int main (int argc, char **argv)
                   get,              // callback func
                   c);               // callback func
     
-#elif ACCE
+#else
     
     
     FILE *f = NULL;
@@ -152,7 +152,7 @@ int main (int argc, char **argv)
     }
     
     fclose(f);
-    
+    /*
 #else
     struct timeval t1, t2;
     
@@ -169,6 +169,7 @@ int main (int argc, char **argv)
     print_ocean(ocean);
     printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
     printf("steep %d\n", j);
+     */
 #endif
    
     return 0;
