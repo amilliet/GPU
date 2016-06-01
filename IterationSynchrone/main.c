@@ -107,7 +107,7 @@ int main (int argc, char **argv)
                   get,              // callback func
                   c);               // callback func
     
-#elifdef ACC
+#elif ACCE
     
     
     FILE *f = NULL;

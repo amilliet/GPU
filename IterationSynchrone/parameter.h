@@ -9,7 +9,7 @@
 //#define DISPLAY // Commenter pour faire les tests de performance
 #define CENTRALE // Initialisation Configuration ou une case centrale comporte 10^5 éléments -- Commenter pour avoir la configuration homogène
 #define OTHER
-#define ACC
+#define ACCE
 
 #define DIM 5
 #define MAX_HEIGHT 16//100000
