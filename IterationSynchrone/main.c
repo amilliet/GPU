@@ -109,35 +109,46 @@ int main (int argc, char **argv)
     
 #elifdef ACC
     
-    struct timeval t1, t2, t3, t4;
-    
-    gettimeofday(&t1, NULL);
-    while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
-    gettimeofday(&t2, NULL);
-    
-    if (i == 0){
-        centrale_case__sable_init();
-    }else{
-        homogene__sable_init();
-    }
-    
-    gettimeofday(&t3, NULL);
-    while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
-    gettimeofday(&t4, NULL);
-    
-    printf("%g / %g  = acceleration = %g\n", TIME_DIFF(t1,t2) / 1000,  TIME_DIFF(t3,t4) / 1000, TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
     
     FILE *f = NULL;
     f = fopen("./../Courbe/test.data","a");
     
     
-    if (f != NULL)
-    {
-        fprintf(f,"%d  %f\n",NB_THREAD,1.0*TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
-    }
-    else
-    {
-        printf("Impossible d'ouvrir le fichier");
+    for(int t=0; t<24; t++){
+        //initilisation du tas de sable
+        if (i == 0){
+            centrale_case__sable_init();
+        }else{
+            homogene__sable_init();
+        }
+        
+        struct timeval t1, t2, t3, t4;
+        gettimeofday(&t1, NULL);
+        while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
+        gettimeofday(&t2, NULL);
+        
+        //initilisation du tas de sable
+        if (i == 0){
+            centrale_case__sable_init();
+        }else{
+            homogene__sable_init();
+        }
+        
+        gettimeofday(&t3, NULL);
+        while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
+        gettimeofday(&t4, NULL);
+        
+        printf("%g / %g  = acceleration = %g\n", TIME_DIFF(t1,t2) / 1000,  TIME_DIFF(t3,t4) / 1000, TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
+        
+        
+        if (f != NULL)
+        {
+            fprintf(f,"%d  %f\n",NB_THREAD,1.0*TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
+        }
+        else
+        {
+            printf("Impossible d'ouvrir le fichier");
+        }
     }
     
     fclose(f);
