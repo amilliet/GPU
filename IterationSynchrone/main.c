@@ -124,18 +124,20 @@ int main (int argc, char **argv)
         
         struct timeval t1, t2, t3, t4;
         gettimeofday(&t1, NULL);
-        while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,t)){}
+        while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,t)){
+        printf("t1");}
         gettimeofday(&t2, NULL);
-        
+        printf("t1t2");
         //initilisation du tas de sable
         if (i == 0){
             centrale_case__sable_init();
+             printf("i = %d",i);
         }else{
             homogene__sable_init();
         }
-        printf("i = %d",i);
+       
         gettimeofday(&t3, NULL);
-        while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
+        while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){printf("t3");}
         gettimeofday(&t4, NULL);
         
         printf("%g / %g  = acceleration = %g\n", TIME_DIFF(t1,t2) / 1000,  TIME_DIFF(t3,t4) / 1000, TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
