@@ -9,4 +9,4 @@ set xlabel "N"
 set ylabel "Performance (#items/s)"
 
 plot "exemple1.data" with linespoints title "Exemple 1",\
-     "exemple2.data" with linespoints title "Exemple 2"
+"exemple2.data" with linespoints title "Exemple 2"
