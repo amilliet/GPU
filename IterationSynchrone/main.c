@@ -89,11 +89,11 @@ int main (int argc, char **argv)
     
 #ifdef OTHER
     compute_func_t c = compute_sequetielle;
-    traiter_func_t ts = traiter_vision_voisin_sequentielle;
+    traiter_func_t_seq ts = traiter_vision_voisin_sequentielle;
     traiter_func_t tp = traiter_vision_voisin_parallele;
 #else
     compute_func_t c = compute;
-    traiter_func_t ts = traiter_basic_sequentielle;
+    traiter_func_t_seq ts = traiter_basic_sequentielle;
     traiter_func_t tp = traiter_basic_parallele;
 
 #endif
@@ -124,7 +124,7 @@ int main (int argc, char **argv)
         
         struct timeval t1, t2, t3, t4;
         gettimeofday(&t1, NULL);
-        while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
+        while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,t)){}
         gettimeofday(&t2, NULL);
         
         //initilisation du tas de sable
@@ -133,7 +133,7 @@ int main (int argc, char **argv)
         }else{
             homogene__sable_init();
         }
-        
+        printf("i = %d",i);
         gettimeofday(&t3, NULL);
         while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
         gettimeofday(&t4, NULL);

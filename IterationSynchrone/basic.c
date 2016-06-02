@@ -2,10 +2,10 @@
 
 
 
-int traiter_basic_parallele(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c couleurs[DIM][DIM]){
+int traiter_basic_parallele(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c couleurs[DIM][DIM], int nb_threads){
     int changement = 0;
     static int a = 1;
-#pragma omp parallel for num_threads(NB_THREAD) collapse(2) shared(ocean) schedule(static)
+#pragma omp parallel for num_threads(nb_threads) collapse(2) shared(ocean) schedule(static)
     for (int y = y_d; y < y_f; y++)
     {
         for (int x = x_d; x < x_f ; x++){
