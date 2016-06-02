@@ -143,7 +143,7 @@ int main (int argc, char **argv)
         
         if (f != NULL)
         {
-            fprintf(f,"%d  %f\n",NB_THREAD,1.0*TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
+            fprintf(f,"%d  %f\n",t,1.0*TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
         }
         else
         {
