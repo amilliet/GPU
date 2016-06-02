@@ -69,7 +69,7 @@ float *compute_sequetielle (unsigned iterations)
     {
         step++;
         
-        int changement = traiter_vision_voisin_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs);
+        int changement = traiter_vision_voisin_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
     }
     //print_ocean();
     return couleurs;
@@ -139,7 +139,7 @@ int main (int argc, char **argv)
         while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
         gettimeofday(&t4, NULL);
         
-        printf("%g / %g  = acceleration = %g\n", TIME_DIFF(t1,t2) / 1000,  TIME_DIFF(t3,t4) / 1000, TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
+        printf("%g / %g  = acceleration = %g\n", ((float)TIME_DIFF(t1,t2)) / 1000,  ((float)TIME_DIFF(t3,t4)) / 1000, (float)TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
         
         
         if (f != NULL)

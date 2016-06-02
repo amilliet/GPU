@@ -3,7 +3,7 @@
 
 
 
-int traiter_vision_voisin_parallele (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM],c couleurs[DIM][DIM]){
+int traiter_vision_voisin_parallele (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM],c couleurs[DIM][DIM],int nb_threads){
     int div4 = 0;
     int oc1 = 0;
     int move = 0;
@@ -17,7 +17,7 @@ int traiter_vision_voisin_parallele (int y_d, int x_d, int y_f, int x_f, unsigne
      See only if ocean[DEBUT][x] (the case y+1) have something to give
      */
     
-#pragma omp parallel for collapse(2) num_threads(NB_THREAD)
+#pragma omp parallel for collapse(2) num_threads(nb_threads)
     for (int y = y_d; y < y_f; y++)
     {
         for (int x = x_d; x < x_f; x++){
@@ -26,7 +26,7 @@ int traiter_vision_voisin_parallele (int y_d, int x_d, int y_f, int x_f, unsigne
         
     }
     
-#pragma omp parallel num_threads(NB_THREAD) firstprivate(oc1,move,div4)
+#pragma omp parallel num_threads(nb_threads) firstprivate(oc1,move,div4)
     {
 #pragma omp for nowait
         for (int x = x_d; x < x_f ; x++){
