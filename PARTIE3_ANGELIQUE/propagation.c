@@ -5,7 +5,7 @@
 
 
 
-void propager(int y, int x, int deep, unsigned ocean[DIM][DIM],int num_thread, int nb_lines,int **tmp){
+void propager(int y, int x, int deep, unsigned ocean[DIM][DIM],int num_thread, int nb_lines,int tmp[2*DEPTH][DIM]){
     if(deep < DEPTH){
         if (y > num_thread*nb_lines-DEPTH && y>=DEBUT && x > DEBUT && y+1 < FIN &&  y+1 < (num_thread+1)*nb_lines+DEPTH && x+1 < FIN){
             test_tas(y, x-1, deep, ocean,num_thread,nb_lines,tmp);
@@ -16,7 +16,7 @@ void propager(int y, int x, int deep, unsigned ocean[DIM][DIM],int num_thread, i
     }
 }
 
-int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, int nb_lines, int **tmp){
+int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, int nb_lines, int tmp[2*DEPTH][DIM]){
     int changement = 0;
     int position = in_my_depth_domain(num_thread, nb_lines, y);
     
