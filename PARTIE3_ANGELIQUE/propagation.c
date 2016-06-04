@@ -190,7 +190,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
                 cursor++;
             }
         }
-//#pragma omp barrier
+#pragma omp barrier
 //#pragma omp parallele for schedule(static)
             for (int y = my_num*nb_lines-DEPTH; y < ((my_num+1)*nb_lines)+DEPTH ; y++){
                 if (y < FIN && y >= DEBUT){
