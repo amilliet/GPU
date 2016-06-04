@@ -17,6 +17,7 @@
 #define NB_THREAD 5
 
 #include <sys/time.h>
+#include <math.h>
 //#include <omp.h>
 
 

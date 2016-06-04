@@ -12,7 +12,7 @@
 
 #define TIME_DIFF(t1, t2) \
 ((t2.tv_sec - t1.tv_sec) * 1000000 + (t2.tv_usec - t1.tv_usec))
-#include <math.h>
+
 
 unsigned ocean[DIM][DIM];
 

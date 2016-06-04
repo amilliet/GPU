@@ -107,7 +107,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
     // Nombre de lignes par thread
     int nb_lines = ceil(1.0*DIM/NB_THREADS);
     int num_thread = 0;
-#pragma omp parallel num_threads(NB_THREADS) shared(num_thread) private(tmp)
+#pragma omp parallel num_threads(NB_THREADS) shared(num_thread)
     {
         int my_num = num_thread;
         num_thread++;
@@ -148,7 +148,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
         }
         
 #pragma omp for schedule(static)
-    for (int y = my_num*nb_lines;(y < (my_num+1)*nb_lines) && (y < DIM); y++){
+    for (int y = my_num*nb_lines; y < (my_num+1)*nb_lines) && (y < DIM); y++){
         printf(" t: %d y: %d ",my_num, y);
         for (int x = 0; x < DIM; x++) {
             int move = test_tas(y,x, 0, ocean,  my_num,nb_lines,tmp);
