@@ -198,15 +198,15 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
             }
         }
         
-#pragma omp critical
-        {
 //#pragma omp parallele for schedule(static)
             for (int y = my_num*nb_lines-DEPTH; y < ((my_num+1)*nb_lines)+DEPTH ; y++){
                 if (y < DIM && y >= DEBUT){
                     printf("\n t: %d y: %d ",my_num, y);
                     for (int x = DEBUT; x < DIM; x++) {
                         //printf("%d ", x);
-                        int move = test_tas(y,x, 0, ocean,  my_num,nb_lines,tmp);
+                        int move;
+                        if ( x != 8)
+                            move = test_tas(y,x, 0, ocean,  my_num,nb_lines,tmp);
                         
                         if (move == 1){
                             changement = 1;
@@ -214,7 +214,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
                     }
                 }
             }
-        }
+        
     }
     
     
