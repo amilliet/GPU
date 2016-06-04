@@ -145,11 +145,10 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
     
     // Nombre de lignes par thread
     int nb_lines = ceil(1.0*DIM/NB_THREADS);
-    int num_thread = 0;
-#pragma omp parallel num_threads(NB_THREADS) shared(num_thread)
+#pragma omp parallel for num_threads(NB_THREADS) 
+    for (int num_thread = 0; num_thread < NB_THREADS; num_thread++ )
     {
         int my_num = num_thread;
-        num_thread++;
         int tmp_lines;
         if(my_num > 0 && (my_num+1)*nb_lines< DIM ){
             tmp_lines = 2*DEPTH;
