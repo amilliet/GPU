@@ -209,7 +209,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
             }
         
     }
-    
+    print_ocean(ocean);
     
     return changement;
 }
