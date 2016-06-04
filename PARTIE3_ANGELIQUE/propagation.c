@@ -27,23 +27,44 @@ int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, i
         }
         if(tmp[tmp_line][x] >= 4){
             int div4 = tmp[tmp_line][x] / 4;
+#pragma omp critical
+            {
             tmp[tmp_line][x] = tmp[tmp_line][x]  % 4;
             tmp[tmp_line][x-1] += div4;
             tmp[tmp_line][x+1] += div4;
+            }
             
             if(position <= -1){
+#pragma omp critical
+                {
                 tmp[tmp_line-1][x] += div4;
+                }
                 if(position == -1){
+#pragma omp critical
+                    {
                     ocean[y+1][x] += div4;
+                    }
                 }else{
+#pragma omp critical
+                    {
                     tmp[tmp_line+1][x] += div4;
+                    }
                 }
             }else if(position >= nb_lines){
+#pragma omp critical
+                {
                 tmp[tmp_line+1][x] += div4;
+                }
                 if(position == nb_lines){
+#pragma omp critical
+                    {
                     ocean[y-1][x] += div4;
+                    }
                 }else{
+#pragma omp critical
+                    {
                     tmp[tmp_line-1][x] += div4;
+                    }
                 }
             }
         }
@@ -55,24 +76,41 @@ int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, i
         if (position !=-1) {
         if (ocean[y][x] >= 4){
             int div4 = ocean[y][x] / 4;
+#pragma omp critical
+            {
             ocean[y][x] = ocean[y][x]  % 4;
             ocean[y][x-1] += div4;
             ocean[y][x+1] += div4;
+            }
             
             if(position >= 0){
+#pragma omp critical
+                {
                 ocean[y-1][x] += div4;
+                }
             }
             if(position == 0){
+#pragma omp critical
+                {
                 tmp[DEPTH-1][x] += div4;
                 ocean[y+1][x] += div4;
+                }
             }
             if(position < (num_thread+1)*nb_lines && position > 0){
+#pragma omp critical
+                {
                 ocean[y-1][x] += div4;
-                
+                }
                 if(position == (num_thread+1)*nb_lines -1){
+#pragma omp critical
+                    {
                     tmp[y-(num_thread+1)*nb_lines+DEPTH+1][x] += div4;
+                    }
                 }else{
+#pragma omp critical
+                    {
                     ocean[y+1][x] += div4;
+                    }
                 }
             }
 
@@ -160,9 +198,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
         }
         
         
-#pragma omp critical
-        {
-            //#pragma omp for schedule(static)
+#pragma omp parallele for schedule(static)
             for (int y = my_num*nb_lines-DEPTH; y < ((my_num+1)*nb_lines)+DEPTH ; y++){
                 if (y < DIM && y >= DEBUT){
                     printf("\n t: %d y: %d ",my_num, y);
@@ -178,6 +214,6 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
             }
         }
         
-    }
+    
     return changement;
 }
