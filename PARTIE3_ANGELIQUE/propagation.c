@@ -158,23 +158,23 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
                 cursor++;
             }
         }
-        }
-        
-
-//#pragma omp for schedule(static)
-        for (int y = my_num*nb_lines; y < ((my_num+1)*nb_lines) ; y++){
-            if (y < DIM && y >= DEBUT){
-                printf(" t: %d y: %d ",my_num, y);
-                for (int x = DEBUT; x < DIM; x++) {
-                    int move = test_tas(y,x, 0, ocean,  my_num,nb_lines,tmp);
-                    
-                    if (move == 1){
-                        changement = 1;
-                    }
+    
+    
+    
+    //#pragma omp for schedule(static)
+    for (int y = my_num*nb_lines; y < ((my_num+1)*nb_lines) ; y++){
+        if (y < DIM && y >= DEBUT){
+            printf(" t: %d y: %d ",my_num, y);
+            for (int x = DEBUT; x < DIM; x++) {
+                int move = test_tas(y,x, 0, ocean,  my_num,nb_lines,tmp);
+                
+                if (move == 1){
+                    changement = 1;
                 }
             }
         }
-        
     }
-    return changement;
+    
+}
+return changement;
 }
