@@ -86,7 +86,7 @@ int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, i
             if(position > 0){
 #pragma omp critical
                 {
-                    printf("pos : %d, x: %d\n",position,x);
+                printf("pos : %d, x: %d\n",position,x);
                 ocean[y-1][x] += div4;
                 }
             }
@@ -198,7 +198,8 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
             }
         }
         
-        
+#pragma omp critical
+        {
 //#pragma omp parallele for schedule(static)
             for (int y = my_num*nb_lines-DEPTH; y < ((my_num+1)*nb_lines)+DEPTH ; y++){
                 if (y < DIM && y >= DEBUT){
@@ -214,7 +215,8 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
                 }
             }
         }
-        
+    }
+    
     
     return changement;
 }
