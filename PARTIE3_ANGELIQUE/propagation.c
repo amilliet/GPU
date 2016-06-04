@@ -82,14 +82,7 @@ int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, i
             ocean[y][x-1] += div4;
             ocean[y][x+1] += div4;
             }
-            
-            if(position > 0){
-#pragma omp critical
-                {
-                //printf("pos : %d, x: %d\n",position,x);
-                ocean[y-1][x] += div4;
-                }
-            }
+           
             if(position == 0){
 #pragma omp critical
                 {
