@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "utile.h"
 
-#define DEPTH 2
+#define DEPTH 3
 
 int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, int nb_lines, int tmp[2*DEPTH][DIM]);
 void propager(int y, int x, int deep, unsigned ocean[DIM][DIM],int num_thread, int nb_lines,int tmp[2*DEPTH][DIM]);
