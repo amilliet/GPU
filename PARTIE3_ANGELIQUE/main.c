@@ -4,6 +4,7 @@
 #include "display.h"
 #include "basic.h"
 #include "other_sequentielle.h"
+#include "propagation.h"
 #include <stdio.h>
 #include <stdlib.h>
 
