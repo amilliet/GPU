@@ -11,7 +11,7 @@
 //#define OTHER
 
 #define DIM 30
-#define MAX_HEIGHT 100000
+#define MAX_HEIGHT 16
 #define DEBUT 1
 #define FIN  DIM - 1
 #define NB_THREAD 5
