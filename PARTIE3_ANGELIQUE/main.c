@@ -161,12 +161,12 @@ int main (int argc, char **argv)
     
     gettimeofday(&t1, NULL);
     int j = 0;
-    /*
+    
     while(traiterProp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs))
     {
         j++;
-    }*/
-    traiterProp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs);
+    }
+    //traiterProp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs);
     gettimeofday(&t2, NULL);
     print_ocean(ocean);
     printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
