@@ -19,18 +19,19 @@ void propager(int y, int x, int deep, unsigned ocean[DIM][DIM],int num_thread, i
 int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, int nb_lines, int **tmp){
     int changement = 0;
     int position = in_my_depth_domain(num_thread, nb_lines, y);
+    
     if ((position != 0)){
-        int tmp_line = y-num_thread*nb_lines-DEPTH;
+        int tmp_line = y-num_thread*nb_lines+DEPTH;
         if(position > 0){
-            tmp_line = y-num_thread*nb_lines;
+            tmp_line = y-(num_thread+1)*nb_lines+DEPTH;
         }
-        if(tmp[y-num_thread*nb_lines-DEPTH][x] >= 4){
+        if(tmp[tmp_line][x] >= 4){
             int div4 = tmp[tmp_line][x] / 4;
             tmp[tmp_line][x] = tmp[tmp_line][x]  % 4;
-            tmp[tmp_line][x] += div4;
-            tmp[tmp_line][x] += div4;
+            tmp[tmp_line][x-1] += div4;
+            tmp[tmp_line][x+1] += div4;
             
-            if(position <= -1){ //&& position + DEPTH + 1 >= 0){
+            if(position <= -1){
                 tmp[tmp_line-1][x] += div4;
                 if(position == -1){
                     ocean[y+1][x] += div4;
@@ -44,7 +45,6 @@ int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, i
                 }else{
                     tmp[tmp_line-1][x] += div4;
                 }
-                ocean[y+1][x] += div4;
             }
         }
         
@@ -63,8 +63,8 @@ int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, i
                 ocean[y-1][x] += div4;
             }
             if(position == 0){
-                tmp[y-num_thread*nb_lines-DEPTH-1][x] += div4;
-                 ocean[y+1][x] += div4;
+                tmp[DEPTH-1][x] += div4;
+                ocean[y+1][x] += div4;
             }
             if(position < (num_thread+1)*nb_lines && position > 0){
                 ocean[y-1][x] += div4;
