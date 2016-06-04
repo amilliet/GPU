@@ -10,7 +10,7 @@
 #define CENTRALE // Initialisation Configuration ou une case centrale comporte 10^5 éléments -- Commenter pour avoir la configuration homogène
 //#define OTHER
 
-#define DIM 30
+#define DIM 5
 #define MAX_HEIGHT 16
 #define DEBUT 1
 #define FIN  DIM - 1

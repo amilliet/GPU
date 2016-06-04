@@ -1,6 +1,6 @@
 
 #include "propagation.h"
-#define NB_THREADS 4
+#define NB_THREADS 2
 
 
 
