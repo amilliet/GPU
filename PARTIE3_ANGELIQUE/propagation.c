@@ -112,37 +112,50 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
         int my_num = num_thread;
         num_thread++;
         int tmp_lines;
-        if(my_num == 0 && (my_num+1)*nb_lines< DIM  ){
+        if(my_num > 0 && (my_num+1)*nb_lines< DIM ){
             tmp_lines = 2*DEPTH;
-        }else if(my_num == 0 || (my_num+1)*nb_lines< DIM ){
+            
+        }else if(my_num == 0 || (my_num+1)*nb_lines >= DIM ){
             tmp_lines = DEPTH;
         }else{
             tmp_lines = 0;
         }
         
+        printf("my_num : %d | tmp_line: %d \n",my_num,tmp_lines);
         int tmp[tmp_lines][DIM];
         int cursor = 0;
         printf("my num : %d, nb_lines : %d\n",my_num,nb_lines);
+        
+        // Les parties centrales
         if(tmp_lines == 2*DEPTH){
+            printf("my num : %d",my_num);
             for(int y = my_num*nb_lines-DEPTH; y < my_num*nb_lines; y++){
                 for (int x = DEBUT; x < FIN; x++){
                     tmp[cursor][x] = ocean[y][x];
                     tmp[cursor+DEPTH][x] = ocean[y+nb_lines][x];
+                    
+                    printf("%d %d\n",tmp[cursor][x], tmp[cursor+DEPTH][x]);
                 }
                 cursor++;
             }
         }else if (my_num == 0){
-            for(int y = DEBUT; y < my_num*nb_lines; y++){
+            printf("my num : %d",my_num);
+            for(int y = (my_num+1)*nb_lines; y < (my_num+1)*nb_lines+DEPTH; y++){
                 for (int x = DEBUT; x < FIN; x++){
                     tmp[cursor][x] = ocean[y][x];
+                    printf("%d ", tmp[cursor][x]);
                 }
+                printf("\n");
                 cursor++;
             }
         }else if ((my_num+1)*nb_lines >= DIM ) {
+            printf("my num : %d",my_num);
             for(int y = my_num*nb_lines-DEPTH; y < FIN; y++){
                 for (int x = DEBUT; x < FIN; x++){
                     tmp[cursor][x] = ocean[y][x];
+                    printf("%d ", tmp[cursor][x]);
                 }
+                printf("\n");
                 cursor++;
             }
         }
