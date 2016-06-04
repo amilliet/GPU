@@ -122,7 +122,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
         
         int tmp[tmp_lines][DIM];
         int cursor = 0;
-        
+        printf("my num : %d, nb_lines : %d\n",my_num,nb_lines);
         if(tmp_lines == 2*DEPTH){
             for(int y = my_num*nb_lines-DEPTH; y < my_num*nb_lines; y++){
                 for (int x = DEBUT; x < FIN; x++){
