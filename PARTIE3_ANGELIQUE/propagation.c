@@ -109,8 +109,6 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
     int num_thread = 0;
 #pragma omp parallel num_threads(NB_THREADS) shared(num_thread)
     {
-#pragma omp critical
-        {
         int my_num = num_thread;
         num_thread++;
         int tmp_lines;
@@ -160,13 +158,14 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
                 cursor++;
             }
         }
+        }
         
+
 //#pragma omp for schedule(static)
         for (int y = my_num*nb_lines; y < ((my_num+1)*nb_lines) ; y++){
-            if (y < DIM){
-                
+            if (y < DIM && y >= DEBUT){
                 printf(" t: %d y: %d ",my_num, y);
-                for (int x = 0; x < DIM; x++) {
+                for (int x = DEBUT; x < DIM; x++) {
                     int move = test_tas(y,x, 0, ocean,  my_num,nb_lines,tmp);
                     
                     if (move == 1){
@@ -175,7 +174,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
                 }
             }
         }
-        }
+        
     }
     return changement;
 }
