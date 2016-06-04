@@ -16,7 +16,7 @@ endif
 
 default: $(PROG)
 
-$(PROG): main.o display.o basic.o utile.o other_sequentielle.o
+$(PROG): main.o display.o basic.o utile.o other_sequentielle.o propagation.o
 	$(CC) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 
 main.o: display.h basic.h
@@ -26,6 +26,8 @@ display.o: display.h
 utile.o: utile.h parameter.h 
 
 basic.o: basic.h parameter.h utile.h
+
+propagation.o: propagation.h utile.h
 
 other_sequentielle.o: other_sequentielle.h utile.h parameter.h
 
