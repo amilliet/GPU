@@ -147,7 +147,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
             }
         }
         
-#pragma omp for schedule(static)
+//#pragma omp for schedule(static)
         for (int y = my_num*nb_lines; y < ((my_num+1)*nb_lines) ; y++){
             if (y < DIM){
                 
