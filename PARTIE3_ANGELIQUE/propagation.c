@@ -138,7 +138,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
                 }
                 cursor++;
             }
-        }else if ((my_num+1)*nb_lines< DIM ) {
+        }else if ((my_num+1)*nb_lines >= DIM ) {
             for(int y = my_num*nb_lines-DEPTH; y < FIN; y++){
                 for (int x = DEBUT; x < FIN; x++){
                     tmp[cursor][x] = ocean[y][x];
