@@ -127,55 +127,57 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
         
         // Les parties centrales
         if(tmp_lines == 2*DEPTH){
-            printf("my num : %d",my_num);
+            //printf("my num : %d",my_num);
             for(int y = my_num*nb_lines-DEPTH; y < my_num*nb_lines; y++){
                 for (int x = DEBUT; x < FIN; x++){
                     tmp[cursor][x] = ocean[y][x];
                     tmp[cursor+DEPTH][x] = ocean[y+nb_lines][x];
                     
-                    printf("%d %d\n",tmp[cursor][x], tmp[cursor+DEPTH][x]);
+              //      printf("%d %d\n",tmp[cursor][x], tmp[cursor+DEPTH][x]);
                 }
                 cursor++;
             }
         }else if (my_num == 0){
-            printf("my num : %d",my_num);
+            //printf("my num : %d",my_num);
             for(int y = (my_num+1)*nb_lines; y < (my_num+1)*nb_lines+DEPTH; y++){
                 for (int x = DEBUT; x < FIN; x++){
                     tmp[cursor][x] = ocean[y][x];
-                    printf("%d ", tmp[cursor][x]);
+              //      printf("%d ", tmp[cursor][x]);
                 }
-                printf("\n");
+                //printf("\n");
                 cursor++;
             }
         }else if ((my_num+1)*nb_lines >= DIM ) {
-            printf("my num : %d",my_num);
+            //printf("my num : %d",my_num);
             for(int y = my_num*nb_lines-DEPTH; y < FIN; y++){
                 for (int x = DEBUT; x < FIN; x++){
                     tmp[cursor][x] = ocean[y][x];
-                    printf("%d ", tmp[cursor][x]);
+              //      printf("%d ", tmp[cursor][x]);
                 }
-                printf("\n");
+                //printf("\n");
                 cursor++;
             }
         }
-    
-    
-    
-    //#pragma omp for schedule(static)
-    for (int y = my_num*nb_lines-DEPTH; y < ((my_num+1)*nb_lines)+DEPTH ; y++){
-        if (y < DIM && y >= DEBUT){
-            printf("\n t: %d y: %d ",my_num, y);
-            for (int x = DEBUT; x < DIM; x++) {
-                printf("%d ", x);
-                int move = test_tas(y,x, 0, ocean,  my_num,nb_lines,tmp);
-                
-                if (move == 1){
-                    changement = 1;
+        
+        
+#pragma omp critical
+        {
+            //#pragma omp for schedule(static)
+            for (int y = my_num*nb_lines-DEPTH; y < ((my_num+1)*nb_lines)+DEPTH ; y++){
+                if (y < DIM && y >= DEBUT){
+                    printf("\n t: %d y: %d ",my_num, y);
+                    for (int x = DEBUT; x < DIM; x++) {
+                        printf("%d ", x);
+                        int move = test_tas(y,x, 0, ocean,  my_num,nb_lines,tmp);
+                        
+                        if (move == 1){
+                            changement = 1;
+                        }
+                    }
                 }
             }
         }
+        
     }
-    
-}
-return changement;
+    return changement;
 }
