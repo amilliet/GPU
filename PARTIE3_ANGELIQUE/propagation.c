@@ -48,7 +48,7 @@ int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, i
             }
         }
         
-        propager(y,x, deep+1, ocean, num_thread,nb_lines,tmp);
+        //propager(y,x, deep+1, ocean, num_thread,nb_lines,tmp);
         changement = 1;
     }else{
         position = in_my_domain(num_thread,nb_lines,y);
@@ -77,7 +77,7 @@ int test_tas(int y, int x, int deep, unsigned ocean[DIM][DIM], int num_thread, i
             }
 
             
-            propager(y,x, deep+1, ocean, num_thread,nb_lines,tmp);
+            //propager(y,x, deep+1, ocean, num_thread,nb_lines,tmp);
             changement = 1;
             
         }
@@ -167,7 +167,7 @@ int traiterProp(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c 
                 if (y < DIM && y >= DEBUT){
                     printf("\n t: %d y: %d ",my_num, y);
                     for (int x = DEBUT; x < DIM; x++) {
-                      //  printf("%d ", x);
+                        //printf("%d ", x);
                         int move = test_tas(y,x, 0, ocean,  my_num,nb_lines,tmp);
                         
                         if (move == 1){
