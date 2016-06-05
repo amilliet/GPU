@@ -6,7 +6,7 @@ int traiter_eboulement_parallele(int y_d, int x_d, int y_f, int x_f, unsigned oc
     int changement = 0;
     static int a = 1;
     
-#pragma omp parallel for num_threads(nb_threads) collapse(2) shared(ocean) schedule(static)
+#pragma omp parallel for num_threads(nb_threads) collapse(2) shared(ocean,changement) schedule(static)
     for (int y = y_d; y < y_f; y++)
     {
         for (int x = x_d; x < x_f ; x++){
@@ -20,8 +20,9 @@ int traiter_eboulement_parallele(int y_d, int x_d, int y_f, int x_f, unsigned oc
                 ocean[y][x+1] = ocean[y][x+1] + div4;
                 ocean[y-1][x] = ocean[y-1][x] + div4;
                 ocean[y + 1][x] = ocean[y + 1][x] + div4;
-                }
+                
                 changement = 1;
+                }
                 move = 1;
             }
 #ifdef DISPLAY
