@@ -1,11 +1,12 @@
 #!/usr/bin/gnuplot
 
 set term pdf #enhanced monochrome dashed
-set output "test.pdf"
+set output "Eboulement_128x128.pdf"
 
 set key right bottom
 
-set xlabel "Nombres de thread"
+set xlabel "Nombres de threads"
 set ylabel "Speed up (#items/s)"
 
-plot "test.data" with linespoints title "test 1"
+plot "Eboulement_init_central.data" with linespoints title "Config Central",\
+"Eboulement_init_homogene.data" with linespoints title "Config Homogène"

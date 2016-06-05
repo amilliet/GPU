@@ -8,7 +8,7 @@
 */
 //#define DISPLAY // Commenter pour faire les tests de performance
 #define CENTRALE // Initialisation Configuration ou une case centrale comporte 10^5 éléments -- Commenter pour avoir la configuration homogène
-#define VISION_VOISIN_AVANT
+//#define VISION_VOISIN_AVANT
 //#define VISION_VOISIN
 
 #define DIM 128

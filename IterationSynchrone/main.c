@@ -132,10 +132,10 @@ int main (int argc, char **argv)
                   c);               // callback func
     
 #else
-    /*
+
     
     FILE *f = NULL;
-    f = fopen("./../Courbe/test.data","a");
+    f = fopen("./../Courbe/Eboulement_init_central.data","a");
     
     
     for(int t=0; t<24; t++){
@@ -177,7 +177,46 @@ int main (int argc, char **argv)
     }
     
     fclose(f);
-    */
+    
+    
+    
+    FILE *fi = NULL;
+    fi = fopen("./../Courbe/Eboulement_init_homogene.data","a");
+    
+    
+    for(int t=0; t<24; t++){
+        homogene__sable_init();
+        
+        
+        struct timeval t1, t2, t3, t4;
+        gettimeofday(&t1, NULL);
+        while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,t)){}
+        gettimeofday(&t2, NULL);
+        
+        //initilisation du tas de sable
+      
+        homogene__sable_init();
+        
+        
+        gettimeofday(&t3, NULL);
+        while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
+        gettimeofday(&t4, NULL);
+        
+        printf("%g / %g  = acceleration = %g\n", ((float)TIME_DIFF(t1,t2)) / 1000,  ((float)TIME_DIFF(t3,t4)) / 1000, (float)TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
+        
+        
+        if (fi != NULL)
+        {
+            fprintf(f,"%d  %f\n",t,1.0*TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
+        }
+        else
+        {
+            printf("Impossible d'ouvrir le fichier");
+        }
+    }
+    
+    fclose(f);
+    /*
     struct timeval t1, t2;
     
     
@@ -193,7 +232,7 @@ int main (int argc, char **argv)
     print_ocean(ocean);
     printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
     printf("steep %d\n", j);
-    
+    */
 #endif
    
     return 0;
