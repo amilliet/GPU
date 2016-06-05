@@ -16,16 +16,18 @@ endif
 
 default: $(PROG)
 
-$(PROG): main.o display.o eboulement.o utile.o vision_voisin.o vision_avant.o
+$(PROG): main.o display.o eboulement.o utile.o vision_voisin.o vision_avant.o propagation.o
 	$(CC) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 
-main.o: display.h eboulement.h vision_voisin.h vision_avant.h
+main.o: display.h eboulement.h vision_voisin.h vision_avant.h propagation.h
 
 display.o: display.h
 
 utile.o: utile.h parameter.h 
 
 eboulement.o: eboulement.h parameter.h utile.h
+
+propagation.o: utile.h parameter.h propagation.h
 
 vision_voisin.o: vision_voisin.h utile.h parameter.h
 
