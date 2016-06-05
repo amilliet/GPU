@@ -179,9 +179,9 @@ int main (int argc, char **argv)
     homogene__sable_init();
     
     struct timeval t5, t6;
-    gettimeofday(&t3, NULL);
+    gettimeofday(&t5, NULL);
     while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
-    gettimeofday(&t4, NULL);
+    gettimeofday(&t6, NULL);
     
     for(int t=0; t<24; t++){
         homogene__sable_init();
