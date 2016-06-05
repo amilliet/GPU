@@ -136,7 +136,10 @@ int main (int argc, char **argv)
     
     FILE *f = NULL;
     f = fopen("./../Courbe/Eboulement_init_central.data","a");
-    
+    struct timeval t3, t4;
+    gettimeofday(&t3, NULL);
+    while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
+    gettimeofday(&t4, NULL);
     
     for(int t=0; t<24; t++){
         //initilisation du tas de sable
@@ -146,22 +149,13 @@ int main (int argc, char **argv)
             homogene__sable_init();
         }
         
-        struct timeval t1, t2, t3, t4;
+        struct timeval t1, t2;
         gettimeofday(&t1, NULL);
         while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,t)){}
         gettimeofday(&t2, NULL);
       
-        //initilisation du tas de sable
-        if (i == 0){
-            centrale_case__sable_init();
-             printf("i = %d",i);
-        }else{
-            homogene__sable_init();
-        }
        
-        gettimeofday(&t3, NULL);
-        while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
-        gettimeofday(&t4, NULL);
+        
         
         printf("%g / %g  = acceleration = %g\n", ((float)TIME_DIFF(t1,t2)) / 1000,  ((float)TIME_DIFF(t3,t4)) / 1000, (float)TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
         
@@ -182,32 +176,29 @@ int main (int argc, char **argv)
     
     FILE *fi = NULL;
     fi = fopen("./../Courbe/Eboulement_init_homogene.data","a");
+    homogene__sable_init();
     
+    struct timeval t5, t6;
+    gettimeofday(&t3, NULL);
+    while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
+    gettimeofday(&t4, NULL);
     
     for(int t=0; t<24; t++){
         homogene__sable_init();
         
         
-        struct timeval t1, t2, t3, t4;
+        struct timeval t1, t2;
         gettimeofday(&t1, NULL);
         while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,t)){}
         gettimeofday(&t2, NULL);
         
-        //initilisation du tas de sable
-      
-        homogene__sable_init();
-        
-        
-        gettimeofday(&t3, NULL);
-        while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
-        gettimeofday(&t4, NULL);
         
         printf("%g / %g  = acceleration = %g\n", ((float)TIME_DIFF(t1,t2)) / 1000,  ((float)TIME_DIFF(t3,t4)) / 1000, (float)TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
         
         
         if (fi != NULL)
         {
-            fprintf(f,"%d  %f\n",t,1.0*TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
+            fprintf(f,"%d  %f\n",t,1.0*TIME_DIFF(t5,t6)/TIME_DIFF(t1,t2));
         }
         else
         {
