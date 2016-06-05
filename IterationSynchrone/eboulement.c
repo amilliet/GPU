@@ -1,10 +1,11 @@
-#include "basic.h"
+#include "eboulement.h"
 
 
 
-int traiter_basic_parallele(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c couleurs[DIM][DIM], int nb_threads){
+int traiter_eboulement_parallele(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c couleurs[DIM][DIM], int nb_threads){
     int changement = 0;
     static int a = 1;
+    
 #pragma omp parallel for num_threads(nb_threads) collapse(2) shared(ocean) schedule(static)
     for (int y = y_d; y < y_f; y++)
     {
@@ -42,7 +43,7 @@ int traiter_basic_parallele(int y_d, int x_d, int y_f, int x_f, unsigned ocean[D
 }
 
 
-int traiter_basic_sequentielle(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c couleurs[DIM][DIM]){
+int traiter_eboulement_sequentielle(int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM], c couleurs[DIM][DIM]){
     int changement = 0;
     for (int y = y_d; y < y_f; y++)
     {

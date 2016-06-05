@@ -1,5 +1,5 @@
 
-#include "other_sequentielle.h"
+#include "vision_voisin.h"
 
 
 

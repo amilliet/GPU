@@ -2,8 +2,10 @@
 #define _XOPEN_SOURCE 600
 
 #include "display.h"
-#include "basic.h"
-#include "other_sequentielle.h"
+#include "eboulement.h"
+#include "vision_voisin.h"
+#include "vision_voisin_avant.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -46,13 +48,13 @@ static void centrale_case__sable_init ()
 
 // Version basique
 
-float *compute (unsigned iterations)
+float *compute_eboulement (unsigned iterations)
 {
     static int step = 0;
     for (unsigned i = 0; i < iterations; i++)
     {
         step++;
-        int changement = traiter_basic_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
+        int changement = traiter_eboulement_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
     }
     
     return couleurs;
@@ -62,16 +64,29 @@ float *compute (unsigned iterations)
 
 
 
-float *compute_sequetielle (unsigned iterations)
+float *compute_vision_voisin (unsigned iterations)
 {
     static int step = 0;
     for (unsigned i = 0; i < iterations; i++)
     {
         step++;
         
-        int changement = traiter_vision_voisin_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
+       traiter_vision_voisin_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
     }
     //print_ocean();
+    return couleurs;
+}
+
+
+float *compute_vision_voisin_avant (unsigned iterations)
+{
+    static int step = 0;
+    for (unsigned i = 0; i < iterations; i++)
+    {
+        step++;
+        
+        traiter_vision_voisin_avant_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
+    }
     return couleurs;
 }
 
@@ -87,14 +102,20 @@ int main (int argc, char **argv)
 #endif
     
     
-#ifdef OTHER
-    compute_func_t c = compute_sequetielle;
+#ifdef VISION_VOISIN
+    compute_func_t c = compute_vision_voisin;
     traiter_func_t_seq ts = traiter_vision_voisin_sequentielle;
     traiter_func_t tp = traiter_vision_voisin_parallele;
+    
+#elseif VISION_VOISIN_AVANT
+    
+    compute_func_t c = compute_vision_voisin_avant;
+    traiter_func_t_seq ts = traiter_vision_voisin_avant_sequentielle;
+    traiter_func_t tp = traiter_vision_voisin_avant_parallele;
 #else
-    compute_func_t c = compute;
-    traiter_func_t_seq ts = traiter_basic_sequentielle;
-    traiter_func_t tp = traiter_basic_parallele;
+    compute_func_t c = compute_eboulement;
+    traiter_func_t_seq ts = traiter_eboulement_sequentielle;
+    traiter_func_t tp = traiter_eboulement_parallele;
 
 #endif
     
@@ -108,7 +129,7 @@ int main (int argc, char **argv)
                   c);               // callback func
     
 #else
-    
+    /*
     
     FILE *f = NULL;
     f = fopen("./../Courbe/test.data","a");
@@ -153,8 +174,7 @@ int main (int argc, char **argv)
     }
     
     fclose(f);
-    /*
-#else
+    */
     struct timeval t1, t2;
     
     
@@ -162,7 +182,7 @@ int main (int argc, char **argv)
     gettimeofday(&t1, NULL);
     int j = 0;
     
-    while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs))
+    while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,10))
     {
         j++;
     }
@@ -170,7 +190,7 @@ int main (int argc, char **argv)
     print_ocean(ocean);
     printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
     printf("steep %d\n", j);
-     */
+    
 #endif
    
     return 0;
