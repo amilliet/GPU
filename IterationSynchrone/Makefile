@@ -16,10 +16,10 @@ endif
 
 default: $(PROG)
 
-$(PROG): main.o display.o eboulement.o utile.o visison_voisin.o visison_voisin_avant.o
+$(PROG): main.o display.o eboulement.o utile.o vision_voisin.o vision_voisin_avant.o
 	$(CC) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 
-main.o: display.h eboulement.h visison_voisin.h visison_voisin_avant.h
+main.o: display.h eboulement.h vision_voisin.h vision_voisin_avant.h
 
 display.o: display.h
 
@@ -27,9 +27,9 @@ utile.o: utile.h parameter.h
 
 eboulement.o: eboulement.h parameter.h utile.h
 
-visison_voisin.o: visison_voisin.h utile.h parameter.h
+vision_voisin.o: vision_voisin.h utile.h parameter.h
 
-visison_voisin_avant.o: visison_voisin_avant.h utile.h parameter.h
+vision_voisin_avant.o: vision_voisin_avant.h utile.h parameter.h
 
 clean:
 	rm -rf *.o $(PROG)
