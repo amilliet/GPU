@@ -106,14 +106,16 @@ int main (int argc, char **argv)
     compute_func_t c = compute_vision_voisin;
     traiter_func_t_seq ts = traiter_vision_voisin_sequentielle;
     traiter_func_t tp = traiter_vision_voisin_parallele;
+#endif
     
-#elifdef VISION_VOISIN_AVANT
-    printf("ok");
+#ifdef VISION_VOISIN_AVANT
     compute_func_t c = compute_vision_voisin_avant;
-    traiter_func_t_seq ts = traiter_vision_voisin_avant_sequentielle;
+    traiter_func_t_seq ts = traiter_vision_voisin_sequentielle;
     traiter_func_t tp = traiter_vision_voisin_avant_parallele;
-#else
-    printf("nonok");
+#endif
+
+    
+#ifdef EBOULEMENT
     compute_func_t c = compute_eboulement;
     traiter_func_t_seq ts = traiter_eboulement_sequentielle;
     traiter_func_t tp = traiter_eboulement_parallele;
