@@ -3,8 +3,8 @@
 
 #include "display.h"
 #include "eboulement.h"
-#include "vision_avant.h"
 #include "vision_voisin.h"
+#include "vision_avant.h"
 
 
 #include <stdio.h>
