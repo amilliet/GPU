@@ -12,7 +12,7 @@
 //#define VISION_VOISIN
 #define EBOULEMENT
 
-#define DIM 128
+#define DIM 512
 #define MAX_HEIGHT 100000
 #define DEBUT 1
 #define FIN  DIM - 1

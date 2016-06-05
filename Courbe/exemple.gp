@@ -1,7 +1,7 @@
 #!/usr/bin/gnuplot
 
 set term pdf #enhanced monochrome dashed
-set output "Eboulement_128x128.pdf"
+set output "Eboulement_512x512.pdf"
 
 set key right bottom
 
