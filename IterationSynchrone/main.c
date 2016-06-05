@@ -3,9 +3,12 @@
 
 #include "display.h"
 #include "eboulement.h"
-#include "vision_voisin.h"
-#include "vision_avant.h"
 
+#ifdef VISION_VOISIN
+#include "vision_voisin.h"
+#else
+#include "vision_avant.h"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
