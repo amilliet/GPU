@@ -12,7 +12,7 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
      
      See only if ocean[DEBUT][x] (the case y+1) have something to give
      */
-#pragma omp parallel for  num_threads(nb_threads) private(oc1,div4,move)
+//#pragma omp parallel for  num_threads(nb_threads) private(oc1,div4,move)
     for (int x = x_d; x < x_f ; x++){
         oc1 = ocean[y_d][x] / 4;
         
@@ -30,7 +30,7 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
     // Copy the second line of ocean
     int tmp_col[x_f - x_d + 1];
   
-#pragma omp parallel for num_threads(nb_threads) private(oc1,div4,move)
+//#pragma omp parallel for num_threads(nb_threads) private(oc1,div4,move)
     for (int x = x_d; x < x_f; x++){
         tmp_col[x] = ocean[y_d][x];
     }
@@ -90,9 +90,8 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
             move = 0;
 #endif
             
-            if (tmp_col[x] != ocean[y+1][x] && y < y_f - 1){
-                tmp_col[x] = ocean[y+1][x];
-            }
+            tmp_col[x] = ocean[y+1][x];
+            
             
             if ( div4 > 0 ){
 #pragma omp critical
