@@ -10,6 +10,8 @@
 #include "vision_avant.h"
 #endif
 
+#include "propagation.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -66,7 +68,17 @@ float *compute_eboulement (unsigned iterations)
 
 // Optimisation sequentielle
 
-
+float *compute_propagation (unsigned iterations)
+{
+    static int step = 0;
+    for (unsigned i = 0; i < iterations; i++)
+    {
+        step++;
+        traiterProp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs);
+    }
+    
+    return couleurs;
+}
 
 float *compute_vision_voisin (unsigned iterations)
 {
@@ -75,7 +87,7 @@ float *compute_vision_voisin (unsigned iterations)
     {
         step++;
         
-       traiter_vision_voisin_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
+        traiter_vision_voisin_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
     }
     return couleurs;
 }
@@ -116,15 +128,17 @@ int main (int argc, char **argv)
     traiter_func_t_seq ts = traiter_vision_avant_sequentielle;
     traiter_func_t tp = traiter_vision_avant_parallele;
 #endif
-
+    
     
 #ifdef EBOULEMENT
     compute_func_t c = compute_eboulement;
     traiter_func_t_seq ts = traiter_eboulement_sequentielle;
     traiter_func_t tp = traiter_eboulement_parallele;
-
+    
 #endif
     
+#ifdef PROPAGATION
+    compute_func_t c = compute_propagation;
     
 #ifdef DISPLAY
     
@@ -135,7 +149,33 @@ int main (int argc, char **argv)
                   c);               // callback func
     
 #else
-
+    struct timeval t1, t2;
+    
+    
+    
+    gettimeofday(&t1, NULL);
+    int j = 0;
+    
+    while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,10))
+    {
+        j++;
+    }
+    gettimeofday(&t2, NULL);
+    print_ocean(ocean);
+    printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
+    printf("steep %d\n", j);
+    
+#endif
+    
+#ifdef DISPLAY
+    
+    display_init (argc, argv,
+                  DIM,              // dimension ( = x = y) du tas
+                  MAX_HEIGHT,       // hauteur maximale du tas
+                  get,              // callback func
+                  c);               // callback func
+    
+#else
     
     FILE *f = NULL;
     f = fopen("./../Courbe/Vision_voisin_init_central.data","a");
@@ -156,8 +196,8 @@ int main (int argc, char **argv)
         gettimeofday(&t1, NULL);
         while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,t)){}
         gettimeofday(&t2, NULL);
-      
-       
+        
+        
         
         
         printf("%g / %g  = acceleration = %g\n", ((float)TIME_DIFF(t1,t2)) / 1000,  ((float)TIME_DIFF(t3,t4)) / 1000, (float)TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
@@ -175,59 +215,8 @@ int main (int argc, char **argv)
     
     fclose(f);
     
-    
-    
-    FILE *fi = NULL;
-    fi = fopen("./../Courbe/Vision_voisin_init_homogene.data","a");
-    homogene__sable_init();
-    
-    struct timeval t5, t6;
-    gettimeofday(&t5, NULL);
-    while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
-    gettimeofday(&t6, NULL);
-    
-    for(int t=0; t<24; t++){
-        homogene__sable_init();
-        
-        
-        struct timeval t1, t2;
-        gettimeofday(&t1, NULL);
-        while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,t)){}
-        gettimeofday(&t2, NULL);
-        
-        
-        printf("%g / %g  = acceleration = %g\n", ((float)TIME_DIFF(t1,t2)) / 1000,  ((float)TIME_DIFF(t3,t4)) / 1000, (float)TIME_DIFF(t3,t4)/TIME_DIFF(t1,t2));
-        
-        
-        if (fi != NULL)
-        {
-            fprintf(f,"%d  %f\n",t,1.0*TIME_DIFF(t5,t6)/TIME_DIFF(t1,t2));
-        }
-        else
-        {
-            printf("Impossible d'ouvrir le fichier");
-        }
-    }
-    
-    fclose(f);
-    /*
-    struct timeval t1, t2;
-    
-    
-    
-    gettimeofday(&t1, NULL);
-    int j = 0;
-    
-    while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,10))
-    {
-        j++;
-    }
-    gettimeofday(&t2, NULL);
-    print_ocean(ocean);
-    printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
-    printf("steep %d\n", j);
-    */
 #endif
-   
+#endif
+    
     return 0;
 }
