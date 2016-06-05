@@ -10,8 +10,6 @@
 #include "vision_avant.h"
 #endif
 
-#include "propagation.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -137,36 +135,6 @@ int main (int argc, char **argv)
     
 #endif
     
-#ifdef PROPAGATION
-    compute_func_t c = compute_propagation;
-    traiter_func_t tp = traiterProp;
-#ifdef DISPLAY
-    
-    display_init (argc, argv,
-                  DIM,              // dimension ( = x = y) du tas
-                  MAX_HEIGHT,       // hauteur maximale du tas
-                  get,              // callback func
-                  c);               // callback func
-    
-#else
-    struct timeval t1, t2;
-    
-    
-    
-    gettimeofday(&t1, NULL);
-    int j = 0;
-    
-    while(tp(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,10))
-    {
-        j++;
-    }
-    gettimeofday(&t2, NULL);
-    print_ocean(ocean);
-    printf("Temps d'exécution basic: %f ms\n",((float)TIME_DIFF(t1,t2)) / 1000);
-    printf("steep %d\n", j);
-    
-#endif
-#else
     
 #ifdef DISPLAY
     
@@ -217,7 +185,7 @@ int main (int argc, char **argv)
     fclose(f);
     
 #endif
-#endif
+
     
     return 0;
 }
