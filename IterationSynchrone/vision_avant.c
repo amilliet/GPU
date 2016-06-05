@@ -1,8 +1,8 @@
 
-#include "vision_voisin_avant.h"
+#include "vision_avant.h"
 
 
-int traiter_vision_voisin_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM],c couleurs[DIM][DIM], int nb_threads){
+int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM],c couleurs[DIM][DIM], int nb_threads){
     int div4 = 0;
     int oc1 = 0;
     int move = 0;
@@ -117,7 +117,7 @@ int traiter_vision_voisin_avant_parallele (int y_d, int x_d, int y_f, int x_f, u
 
 
 
-int traiter_vision_voisin_avant_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM],c couleurs[DIM][DIM]){
+int traiter_vision_avant_sequentielle (int y_d, int x_d, int y_f, int x_f, unsigned ocean[DIM][DIM],c couleurs[DIM][DIM]){
     int div4 = 0;
     int oc1 = 0;
     int move = 0;

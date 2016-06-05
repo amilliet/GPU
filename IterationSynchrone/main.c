@@ -3,8 +3,9 @@
 
 #include "display.h"
 #include "eboulement.h"
+#include "vision_avant.h"
 #include "vision_voisin.h"
-#include "vision_voisin_avant.h"
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -54,7 +55,7 @@ float *compute_eboulement (unsigned iterations)
     for (unsigned i = 0; i < iterations; i++)
     {
         step++;
-        int changement = traiter_eboulement_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
+        traiter_eboulement_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
     }
     
     return couleurs;
@@ -73,7 +74,6 @@ float *compute_vision_voisin (unsigned iterations)
         
        traiter_vision_voisin_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
     }
-    //print_ocean();
     return couleurs;
 }
 
@@ -85,7 +85,7 @@ float *compute_vision_voisin_avant (unsigned iterations)
     {
         step++;
         
-        traiter_vision_voisin_avant_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
+        traiter_vision_avant_parallele(DEBUT, DEBUT, FIN, FIN, ocean, couleurs,NB_THREAD);
     }
     return couleurs;
 }
@@ -110,8 +110,8 @@ int main (int argc, char **argv)
     
 #ifdef VISION_VOISIN_AVANT
     compute_func_t c = compute_vision_voisin_avant;
-    traiter_func_t_seq ts = traiter_vision_voisin_sequentielle;
-    traiter_func_t tp = traiter_vision_voisin_avant_parallele;
+    traiter_func_t_seq ts = traiter_vision_avant_sequentielle;
+    traiter_func_t tp = traiter_vision_avant_parallele;
 #endif
 
     
