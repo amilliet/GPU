@@ -35,7 +35,6 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
         tmp_col[x] = ocean[y_d][x];
     }
     
-#pragma omp parallel for  num_threads(nb_threads/2) private(oc1,div4,move) schedule(dynamic)
     for (int y = y_d; y < y_f; y++)
     {
         move = 0;
@@ -55,7 +54,7 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
         
         // Center
         
-#pragma omp parallel for  num_threads(nb_threads/2) private(oc1,div4,move) schedule(dynamic)
+#pragma omp parallel for  num_threads(nb_threads) private(oc1,div4,move) schedule(dynamic)
         for (int x = x_d; x < x_f; x++){
             
             div4 = tmp_col[x] / 4;
@@ -103,6 +102,7 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
                 changement = 1;
                 move = 1;
             }
+
 #ifdef DISPLAY
             coloring(y,x+1,move,ocean,couleurs);
             coloring(y+1,x,move,ocean,couleurs);
