@@ -89,7 +89,8 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
             coloring(y,x,move,ocean,couleurs);
             move = 0;
 #endif
-            
+
+#pragma omp barrier
             tmp_col[x] = ocean[y+1][x];
             
             
