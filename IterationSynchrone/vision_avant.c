@@ -54,7 +54,7 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
         
         // Center
         
-#pragma omp parallel for  num_threads(nb_threads) private(oc1,div4,move) shared(tmp_col)
+#pragma omp parallel for  num_threads(nb_threads) private(oc1,div4,move) firstprivate(tmp_col)
         for (int x = x_d; x < x_f; x++){
             
             div4 = tmp_col[x] / 4;
@@ -90,7 +90,6 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
             move = 0;
 #endif
 
-#pragma omp barrier
             tmp_col[x] = ocean[y+1][x];
             
             
