@@ -54,17 +54,15 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
         
         // Center
         
-#pragma omp parallel for  num_threads(nb_threads) private(oc1,div4,move) schedule(dynamic)
+#pragma omp parallel for  num_threads(nb_threads) private(oc1,div4,move)
         for (int x = x_d; x < x_f; x++){
             
             div4 = tmp_col[x] / 4;
             
             // Don't take the last column
             if (x+1 < x_f){
-#pragma omp critical
-                {
                 oc1 = tmp_col[x+1] / 4;
-                }
+                
             }else{
                 oc1 = 0;
             }
@@ -76,10 +74,13 @@ int traiter_vision_avant_parallele (int y_d, int x_d, int y_f, int x_f, unsigned
             
             if ( oc1 > 0 || div4 > 0){
                 int mod = tmp_col[x] % 4;
+#pragma omp critical
+                {
                 if (ocean[y][x] == tmp_col[x]){
                     ocean[y][x] = mod + oc1;
                 }else{
                     ocean[y][x] = mod + oc1 + ocean[y][x] - tmp_col[x];
+                }
                 }
                 changement = 1;
                 move = 1;
