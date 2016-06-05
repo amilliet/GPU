@@ -139,7 +139,7 @@ int main (int argc, char **argv)
     
 #ifdef PROPAGATION
     compute_func_t c = compute_propagation;
-    
+    traiter_func_t tp = traiterProp;
 #ifdef DISPLAY
     
     display_init (argc, argv,
