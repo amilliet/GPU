@@ -166,6 +166,7 @@ int main (int argc, char **argv)
     printf("steep %d\n", j);
     
 #endif
+#else
     
 #ifdef DISPLAY
     
