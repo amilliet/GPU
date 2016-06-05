@@ -19,7 +19,7 @@ default: $(PROG)
 $(PROG): main.o display.o eboulement.o utile.o visison_voisin.o visison_voisin_avant.o
 	$(CC) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 
-main.o: display.h basic.h
+main.o: display.h eboulement.h visison_voisin.h visison_voisin_avant.h
 
 display.o: display.h
 
