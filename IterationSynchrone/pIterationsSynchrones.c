@@ -1,5 +1,5 @@
 
-#include "propagation.h"
+#include "pIterationsSynchrones.h"
 #define NB_THREADS 4
 
 
