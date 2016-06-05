@@ -135,7 +135,7 @@ int main (int argc, char **argv)
 
     
     FILE *f = NULL;
-    f = fopen("./../Courbe/Eboulement_init_central.data","a");
+    f = fopen("./../Courbe/Vision_voisin_avant_init_central.data","a");
     struct timeval t3, t4;
     gettimeofday(&t3, NULL);
     while(ts(DEBUT, DEBUT, FIN, FIN, ocean, couleurs)){}
@@ -175,7 +175,7 @@ int main (int argc, char **argv)
     
     
     FILE *fi = NULL;
-    fi = fopen("./../Courbe/Eboulement_init_homogene.data","a");
+    fi = fopen("./../Courbe/Vision_voisin_avant_init_homogene.data","a");
     homogene__sable_init();
     
     struct timeval t5, t6;
